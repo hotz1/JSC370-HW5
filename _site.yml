@@ -1,0 +1,18 @@
+name: "Joey's Website"
+output_dir: "docs"
+navbar:
+  title: "Joey's Website"
+  left:
+    - text: "Home Page"
+      href: index.html
+    - text: "The Second Page"
+      href: Page1.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/hotz1
+output:
+  html_document:
+    theme: cosmo
+    include:
+      after_body: footer.html
+    css: styles.css
