@@ -3,17 +3,22 @@ title: "About The Data"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: html_document
 ---
-<style type="text/css">
+```{css site-setup, include = FALSE}
+.navbar {
+  background-color:#1db954;
+}
 .main-container {
   max-width: 1600px;
   margin-left: auto;
   margin-right: auto;
+  font-size: 16px;
 }
-</style>
+```
 
-```{r setup, include=FALSE}
+```{r doc-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 
 ```{r import-libraries, include = FALSE}
 library(tidyverse)
