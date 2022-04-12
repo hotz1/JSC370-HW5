@@ -21,10 +21,12 @@ library(dplyr)
 library(knitr)
 library(kableExtra)
 library(plotly)
+library(readxl)
 ```
 
 ```{r import-data, echo = FALSE, message = FALSE}
 spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv")
+# happiness_index <- read_xls("DataForFigure2.1WHR2021C2.xls")
 ```
 
 ```{r}
