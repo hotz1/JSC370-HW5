@@ -1,6 +1,5 @@
 ---
 title: "About The Data"
-author: "Joey Hotz"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: html_document
 ---

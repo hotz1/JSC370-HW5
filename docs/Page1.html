@@ -9,7 +9,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Joey Hotz" />
 
 <meta name="date" content="2022-04-12" />
 
@@ -36,6 +35,8 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -246,7 +247,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Joey's Website</a>
+      <a class="navbar-brand" href="index.html"></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -256,11 +257,20 @@ $(document).ready(function () {
 <li>
   <a href="Page1.html">Visualizations</a>
 </li>
+<li>
+  <a href="Data-Tables.html">See The Data</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/hotz1">
-    <span class="icon icon-github"></span>
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://open.spotify.com/user/22nwm6wd6d6uwz4jw6hd4bdua">
+    <span class="fa fa-spotify fa-lg"></span>
      
   </a>
 </li>
@@ -274,22 +284,11 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Home Page</h1>
-<h4 class="author">Joey Hotz</h4>
 <h4 class="date">April 12, 2022</h4>
 
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting
-syntax for authoring HTML, PDF, and MS Word documents. For more details
-on using R Markdown see <a href="http://rmarkdown.rstudio.com"
-class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be
-generated that includes both content as well as the output of any
-embedded R code chunks within the document. You can embed an R code
-chunk like this:</p>
 <pre class="r"><code>countries &lt;- table(spotify_data$Country)
 countries &lt;- countries / 200
 knitr::kable(countries, caption = &quot;Number of Weeks of Data Per Country&quot;) %&gt;%
@@ -889,7 +888,6 @@ Vietnam
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 
 <p>Created by Joey Hotz.</p>

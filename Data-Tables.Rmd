@@ -1,0 +1,57 @@
+---
+title: "Examine The Data!"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r import-libraries, include = FALSE}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(DT)
+```
+
+```{r import-data, echo = FALSE, message = FALSE}
+spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv",
+                         encoding = "UTF-8")
+happiness_index <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/happiness_data.csv")
+```
+
+On this page, you can play with the data which we collected from the Spotify Charts website and the Spotify API.
+
+## Popular Songs
+
+```{r individual-tracks-data, echo = FALSE, message = FALSE}
+# Group by song to collect information on each individual song
+tracks_data <- spotify_data %>% 
+  select(Song_Name, Artists, Song_Length, Danceability, Energy,
+         Valence, Track_ID, Track_URL, Weekly_Streams, Occurrences) %>%
+  group_by(Track_ID) %>%
+  mutate(Streams = sum(Weekly_Streams)) %>%
+  select(-Weekly_Streams) %>%
+  ungroup()
+
+tracks_data <- unique(tracks_data)
+
+popular_tracks <- tracks_data %>%
+  filter(Occurrences >= 100)
+```
+
+```{r popular-tracks-table, echo = FALSE, message = FALSE}
+# Converts a track id into a Spotify embed link for that track.
+embed_link_start <- '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
+embed_link_end <- '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>'
+
+popular_tracks_table <- popular_tracks %>%
+  mutate(Link = paste0(embed_link_start, Track_ID, embed_link_end)) %>%
+  select(Song_Name, Artists, Occurrences, Streams, Link) %>%
+  as.matrix()
+
+datatable(popular_tracks_table, escape = FALSE)
+```
