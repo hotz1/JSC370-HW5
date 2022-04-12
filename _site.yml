@@ -4,7 +4,7 @@ navbar:
   title: "Joey's Website"
   left:
     - text: "About The Data"
-      href: About.html
+      href: index.html
     - text: "Visualizations"
       href: Page1.html
   right:
