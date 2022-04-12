@@ -9,9 +9,9 @@ navbar:
     - text: "See The Data"
       href: Data-Tables.html
   right:
-    - icon: fa-github fa-lg
+    - icon: fa-github fa-2x
       href: https://github.com/hotz1
-    - icon: fa-spotify fa-lg
+    - icon: fa-spotify fa-2x
       href: https://open.spotify.com/user/22nwm6wd6d6uwz4jw6hd4bdua
 output:
   html_document:

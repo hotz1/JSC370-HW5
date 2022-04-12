@@ -15,11 +15,11 @@ library(knitr)
 library(kableExtra)
 library(plotly)
 library(DT)
+library(utf8)
 ```
 
 ```{r import-data, echo = FALSE, message = FALSE}
-spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv",
-                         encoding = "UTF-8")
+spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv")
 happiness_index <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/happiness_data.csv")
 ```
 
@@ -44,14 +44,21 @@ popular_tracks <- tracks_data %>%
 ```
 
 ```{r popular-tracks-table, echo = FALSE, message = FALSE}
-# Converts a track id into a Spotify embed link for that track.
-embed_link_start <- '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
-embed_link_end <- '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>'
+popular_tracks <- popular_tracks %>%
+  mutate(Song_Name = as_utf8(Song_Name)) %>%
+  select(Song_Name, Artists, Occurrences, Streams, Track_ID) %>%
+  arrange(-Occurrences)
 
-popular_tracks_table <- popular_tracks %>%
-  mutate(Link = paste0(embed_link_start, Track_ID, embed_link_end)) %>%
+industry_baby <- '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5Z9KJZvQzH6PFmb8SNkxuk?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>'
+
+popular_tracks <- cbind(popular_tracks, industry_baby)
+popular_tracks <- popular_tracks %>%
+  mutate(Link = stringr::str_replace(industry_baby, '5Z9KJZvQzH6PFmb8SNkxuk', Track_ID)) %>%
   select(Song_Name, Artists, Occurrences, Streams, Link) %>%
   as.matrix()
 
-datatable(popular_tracks_table, escape = FALSE)
+DT::datatable(popular_tracks, escape = FALSE, options = list(pageLength = 25),
+              colnames = c('Song Name', 'Song Artists', 'Occurrences in Top 200', 'Total Streams', 'Spotify Link'),
+              caption = "Songs Which Appeared in the Top 200 Songs on a country\'s weekly Spotify Charts at least 100 times between 
+              December 31, 2021 and April 1, 2022.")
 ```
