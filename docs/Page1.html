@@ -289,6 +289,13 @@ $(document).ready(function () {
 </div>
 
 
+<style type="text/css">
+.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 <pre class="r"><code>countries &lt;- table(spotify_data$Country)
 countries &lt;- countries / 200
 knitr::kable(countries, caption = &quot;Number of Weeks of Data Per Country&quot;) %&gt;%

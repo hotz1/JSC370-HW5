@@ -3,6 +3,13 @@ title: "Examine The Data!"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: html_document
 ---
+<style type="text/css">
+.main-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -38,22 +45,22 @@ tracks_data <- spotify_data %>%
   ungroup()
 
 tracks_data <- unique(tracks_data)
-
-popular_tracks <- tracks_data %>%
-  filter(Occurrences >= 100)
 ```
 
 ```{r popular-tracks-table, echo = FALSE, message = FALSE}
+popular_tracks <- tracks_data %>%
+  filter(Occurrences >= 100)
+
 popular_tracks <- popular_tracks %>%
   mutate(Song_Name = as_utf8(Song_Name)) %>%
   select(Song_Name, Artists, Occurrences, Streams, Track_ID) %>%
   arrange(-Occurrences)
 
-industry_baby <- '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5Z9KJZvQzH6PFmb8SNkxuk?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>'
+embed_html <- '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5Z9KJZvQzH6PFmb8SNkxuk?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>'
 
-popular_tracks <- cbind(popular_tracks, industry_baby)
+popular_tracks <- cbind(popular_tracks, embed_html)
 popular_tracks <- popular_tracks %>%
-  mutate(Link = stringr::str_replace(industry_baby, '5Z9KJZvQzH6PFmb8SNkxuk', Track_ID)) %>%
+  mutate(Link = stringr::str_replace(embed_html, '5Z9KJZvQzH6PFmb8SNkxuk', Track_ID)) %>%
   select(Song_Name, Artists, Occurrences, Streams, Link) %>%
   as.matrix()
 
