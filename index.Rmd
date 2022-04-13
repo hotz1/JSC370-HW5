@@ -19,7 +19,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ```{r import-libraries, include = FALSE}
 library(tidyverse)
 library(dplyr)

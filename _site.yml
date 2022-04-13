@@ -6,8 +6,8 @@ navbar:
       href: index.html
     - text: "Visualizations"
       href: Page1.html
-    - text: "See The Data"
-      href: Data-Tables.html
+    - text: "Popular Songs Worldwide"
+      href: Songs-Global.html
   right:
     - icon: fa-github fa-2x
       href: https://github.com/hotz1
