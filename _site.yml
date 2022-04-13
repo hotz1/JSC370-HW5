@@ -15,6 +15,7 @@ navbar:
       href: https://open.spotify.com/user/22nwm6wd6d6uwz4jw6hd4bdua
 output:
   html_document:
+    theme: cosmo
     include: 
       after_body: footer.html
     css: styles.css
