@@ -3,7 +3,7 @@ title: "About The Data"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: html_document
 ---
-```{css site-setup, include = FALSE}
+```{css site-setup, eval = FALSE, include = FALSE}
 .navbar {
   background-color:#1db954;
 }
