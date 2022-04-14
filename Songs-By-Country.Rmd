@@ -35,9 +35,7 @@ spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/mai
 happiness_index <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/happiness_data.csv")
 ```
 
-The table below shows all tracks which have appeared in a country's Top 200 Weekly Tracks on the [Spotify Charts website](https://spotifycharts.com/regional/global/daily/latest) at least 100 times during the first three months of 2022.
-
-As mentioned on the homepage, our data consists of 918 individual Top 200 Weekly Tracks lists from a total of 72 countries across the globe. Since each track can only appear once per list, the highest number of possible occurrences for an individual track is if it appears in all 918 Top 200 Tracks playlists which we collected from the Spotify Charts website.
+The table below shows the 25 tracks which had the highest total number of streams in a particular country during the first three months of 2022. The streaming data for each track is based on the Top 200 Weekly Tracks charts for each country, which were displayed on the [Spotify Charts website](https://spotifycharts.com/regional/global/daily/latest).
 
 ```{r individual-tracks-data, echo = FALSE, message = FALSE}
 # Group by song to collect information on each individual song

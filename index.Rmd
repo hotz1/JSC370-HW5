@@ -15,26 +15,18 @@ output: html_document
 }
 </style>
 
-```{r doc-setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+## Introduction: 
 
-```{r import-libraries, include = FALSE}
-library(tidyverse)
-library(dplyr)
-library(knitr)
-library(kableExtra)
-library(plotly)
-```
+This website contains interactive visualizations and tables corresponding to Spotify Charts data which was collected between December 31, 2021, and April 1, 2022, and the 2021 edition of the World Happiness Report.
 
-```{r import-data, echo = FALSE, message = FALSE}
-spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv")
-```
+The data used for creating these charts and tables comes from the weekly Top 200 Tracks charts which were posted on the [Spotify Charts website](https://spotifycharts.com/regional/global/daily/latest) during this period of time. Overall, 72 countries were represented in this 13-week period, with all but three having a Top 200 Tracks chart for each of these 13 weeks.
 
-```{r countries-table, echo = FALSE, message = FALSE}
-countries <- table(spotify_data$Country)
-countries <- countries / 200
-knitr::kable(countries, caption = "Number of Top 200 Weekly Tracks lists available on the Spotify Charts website per country",
-             col.names = c("Country Name", "Weeks of Data")) %>%
-  kableExtra::scroll_box(height = '800px')
-```
+## This Website's Purpose
+
+The data which is visualized on this website was collected to answer one primary research question: "*Is there a correlation between countries' happiness levels and how happy the popular songs are in that country?*" 
+
+To determine the happiness level of a country, we used the data from the 2021 edition of the [World Happiness Report](https://worldhappiness.report/ed/2021/), in order to have a quantifiable metric which represents how happy the citizens of the country are with their lives in that country.
+
+To determine how happy the popular songs are in a particular country, we collected data from the Spotify Charts website during the first three months of 2022, in order to determine how happy these songs are.
+
+Beyond being one of the most comprehensive sources for playing music, Spotify also has created metrics which determine how happy a single song is. There are three main metrics which we will use to determine how happy a song is; the song's danceability, energy, and valence. These values are all rated on an interval from 0.0 to 1.0, and they are computed by Spotify themselves. Using the [Spotify API](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-features), we can find these values for different popular songs in countries across the world, in order to determine how happy the popular songs in these countries are, with respect to these three happiness metrics.

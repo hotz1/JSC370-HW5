@@ -63,9 +63,11 @@ spotify_avgs_by_country <- spotify_happiness_data %>%
 spotify_avgs_by_country <- unique(spotify_avgs_by_country)
 ```
 
-## Interactive COVID Plots by State: {.tabset}
+## Highly-Played Track Averages by Country: {.tabset}
 
-TEXT HERE
+The following three plots show the average danceability, energy, and valence of tracks on the Top 200 Spotify Tracks for their respective countries during the first three months of 2022.
+
+In each of the three plots shown below, each country with data on the Spotify Charts website is represented by a circular marker. The marker's size is proportional to the logarithm of the country's GDP per capita, and the marker's colour is chosen based on the region which the country is located in.
 
 ### Track Danceability by Country
 
@@ -78,11 +80,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Danceability: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Danceability: ", round(Mean_Danceability, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Mean Track Danceability per Country",
          xaxis = list(title = "Country Happiness"),
@@ -102,11 +104,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Energy: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Energy: ", round(Mean_Energy, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Mean Track Energy per Country",
          xaxis = list(title = "Country Happiness"),
@@ -126,11 +128,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Valence: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Valence: ", round(Mean_Valence, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Mean Track Valence per Country",
          xaxis = list(title = "Country Happiness"),
@@ -141,7 +143,9 @@ my_plot
 
 ## Averages Weighted by Number of Streams: {.tabset}
 
-TEXT HERE
+Similar to the three plots shown above, the following three plots also show the average danceability, energy, and valence of tracks on the Top 200 Spotify Tracks for their respective countries during the first three months of 2022. 
+
+However, in this plot, we computed a weighted average of these three metrics, where these metrics are weighted proportionally according to the number of times that the track was streamed in the given country. This may provide a more robust metric than simply computing the means, as weighted means allow us to account for how popular a song is in a particular country.
 
 ### Track Danceability by Country
 
@@ -154,11 +158,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Danceability: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Danceability: ", round(Weighted_Mean_Danceability, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Average Track Danceability per Country, Weighted by Number of Streams",
          xaxis = list(title = "Country Happiness"),
@@ -178,11 +182,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Energy: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Energy: ", round(Weighted_Mean_Energy, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Average Track Energy per Country, Weighted by Number of Streams",
          xaxis = list(title = "Country Happiness"),
@@ -202,11 +206,11 @@ my_plot <- spotify_avgs_by_country %>%
           marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
           color = ~Region, 
           colors = colorRamp(c("purple", "orange")),
-          text = ~Country,
-          hovertemplate = paste0("<b>%{text}</b><br><br>",
-                                 "Happiness: %{x}<br>",
-                                 "Average Track Valence: %{y:,.4f}<br>",
-                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+          text = ~paste("<b>", Country, "</b><br><br>Happiness: ", round(Happiness, 4),
+                        "<br>Average Track Valence: ", round(Weighted_Mean_Valence, 4),
+                        "<br>Log GDP Per Capita: ", round(log_GDP_per_capita, 4)),
+          hoverinfo = "text")
+
 my_plot <- my_plot %>%
   layout(title = "Average Track Valence per Country, Weighted by Number of Streams",
          xaxis = list(title = "Country Happiness"),
