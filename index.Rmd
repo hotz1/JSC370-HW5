@@ -34,6 +34,7 @@ spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/mai
 ```{r countries-table, echo = FALSE, message = FALSE}
 countries <- table(spotify_data$Country)
 countries <- countries / 200
-knitr::kable(countries, caption = "Number of Weeks of Data Per Country") %>%
+knitr::kable(countries, caption = "Number of Top 200 Weekly Tracks lists available on the Spotify Charts website per country",
+             col.names = c("Country Name", "Weeks of Data")) %>%
   kableExtra::scroll_box(height = '800px')
 ```

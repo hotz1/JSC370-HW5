@@ -21,20 +21,196 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r import-libraries, include = FALSE}
 library(tidyverse)
+library(data.table)
 library(dplyr)
 library(knitr)
 library(kableExtra)
 library(plotly)
+library(widgetframe)
 ```
 
 ```{r import-data, echo = FALSE, message = FALSE}
-spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv")
+spotify_data <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/spotify_data_full.csv", 
+                         col_select = -c(`...1`))
 happiness_index <- read_csv("https://raw.githubusercontent.com/hotz1/JSC370-HW5/main/happiness_data.csv")
 ```
 
-```{r}
-countries <- table(spotify_data$Country)
-countries <- countries / 200
-knitr::kable(countries, caption = "Number of Weeks of Data Per Country") %>%
-  kableExtra::scroll_box(height = '800px')
+```{r merge-data, echo = FALSE}
+happiness_small <- happiness_index %>%
+  dplyr::select(Country = `Country name`, Region = `Regional indicator`, Happiness = `Ladder score`,
+                Lower_CI = lowerwhisker, Upper_CI = upperwhisker, log_GDP_per_capita = `Logged GDP per capita`)
+
+happiness_small[happiness_small == "Hong Kong S.A.R. of China"] <- "Hong Kong"
+happiness_small[happiness_small == "Taiwan Province of China"] <- "Taiwan"
+
+spotify_happiness_data <- merge(spotify_data, happiness_small, by = c("Country"))
+```
+
+```{r averages-by-country, echo = FALSE}
+spotify_avgs_by_country <- spotify_happiness_data %>%
+  select(Country, Region, Happiness, Lower_CI, Upper_CI, Danceability,
+         Energy, Valence, Weekly_Streams, log_GDP_per_capita) %>%
+  group_by(Country) %>%
+  mutate(Mean_Danceability = mean(Danceability, na.rm = TRUE),
+         Mean_Energy = mean(Energy, na.rm = TRUE),
+         Mean_Valence = mean(Valence, na.rm = TRUE),
+         Weighted_Mean_Danceability = weighted.mean(Danceability, Weekly_Streams, na.rm = TRUE),
+         Weighted_Mean_Energy = weighted.mean(Energy, Weekly_Streams, na.rm = TRUE),
+         Weighted_Mean_Valence = weighted.mean(Valence, Weekly_Streams, na.rm = TRUE)) %>%
+  select(-c("Danceability", "Energy", "Valence", "Weekly_Streams")) %>%
+  ungroup()
+
+spotify_avgs_by_country <- unique(spotify_avgs_by_country)
+```
+
+## Interactive COVID Plots by State: {.tabset}
+
+TEXT HERE
+
+### Track Danceability by Country
+
+```{r mean-danceability-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Mean_Danceability,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Danceability: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Mean Track Danceability per Country",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Danceability"))
+
+my_plot
+```
+
+### Track Energy by Country
+
+```{r mean-energy-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Mean_Energy,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Energy: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Mean Track Energy per Country",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Energy"))
+
+my_plot
+```
+
+### Track Valence by Country
+
+```{r mean-valence-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Mean_Valence,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Valence: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Mean Track Valence per Country",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Valence"))
+
+my_plot
+```
+
+## Averages Weighted by Number of Streams: {.tabset}
+
+TEXT HERE
+
+### Track Danceability by Country
+
+```{r weighted-mean-danceability-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Weighted_Mean_Danceability,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Danceability: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Average Track Danceability per Country, Weighted by Number of Streams",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Danceability"))
+
+my_plot
+```
+
+### Track Energy by Country
+
+```{r weighted-mean-energy-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Weighted_Mean_Energy,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Energy: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Average Track Energy per Country, Weighted by Number of Streams",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Energy"))
+
+my_plot
+```
+
+### Track Valence by Country
+
+```{r weighted-mean-valence-by-country, echo = FALSE, fig.width = 10, fig.height = 7}
+my_plot <- spotify_avgs_by_country %>%
+  plot_ly(type = 'scatter',
+          mode = 'markers',
+          x = ~Happiness, 
+          y = ~Weighted_Mean_Valence,
+          marker = list(size = ~log_GDP_per_capita, opacity = 0.5),
+          color = ~Region, 
+          colors = colorRamp(c("purple", "orange")),
+          text = ~Country,
+          hovertemplate = paste0("<b>%{text}</b><br><br>",
+                                 "Happiness: %{x}<br>",
+                                 "Average Track Valence: %{y:,.4f}<br>",
+                                 "Log GDP Per Capita: %{marker.size:,.4f}"))
+my_plot <- my_plot %>%
+  layout(title = "Average Track Valence per Country, Weighted by Number of Streams",
+         xaxis = list(title = "Country Happiness"),
+         yaxis = list(title = "Track Valence"))
+
+my_plot
 ```
